@@ -3,85 +3,71 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Automação de Rede</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f9;
-        }
-
-        .container {
-            max-width: 500px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        input,
-        select,
-        button {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-
-        .alert {
-            padding: 10px;
-            background-color: #e2e2e2;
-            border-radius: 4px;
-            margin-top: 10px;
-            white-space: pre-wrap;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
     <div class="container">
-        <h2>Provisionar Interface de Rede</h2>
+        <div class="header">
+            <h1>Automação de Rede</h1>
+            <p>Painel de provisionamento de interfaces</p>
+        </div>
+
         <form action="/configurar" method="POST">
-            <label>Tipo de Equipamento:</label>
-            <select name="fabricante">
-                <option value="cisco_ios">Cisco IOS</option>
-                <option value="mikrotik_routeros">Mikrotik RouterOS</option>
-                <option value="huawei_vrp">Huawei VRP</option>
-            </select>
+            <div class="form-group">
+                <label for="fabricante">Fabricante</label>
+                <select id="fabricante" name="fabricante" required>
+                    <option value="">Selecione o fabricante</option>
+                    <option value="cisco_ios">Cisco IOS</option>
+                    <option value="mikrotik_routeros">MikroTik RouterOS</option>
+                    <option value="huawei_vrp">Huawei VRP</option>
+                </select>
+            </div>
 
-            <label>IP do Roteador:</label>
-            <input type="text" name="ip" placeholder="Ex: 192.168.1.1" required>
+            <div class="form-group">
+                <label for="ip">IP do equipamento</label>
+                <input type="text" id="ip" name="ip" placeholder="Ex: 192.168.1.1" required>
+                <span class="hint">Informe o endereço IPv4 ou IPv6 do equipamento.</span>
+            </div>
 
-            <label>Usuário SSH:</label>
-            <input type="text" name="usuario" placeholder="admin" required>
+            <div class="form-group">
+                <label for="usuario">Usuário SSH</label>
+                <input type="text" id="usuario" name="usuario" placeholder="Ex: admin" required autocomplete="username">
+            </div>
 
-            <label>Senha SSH:</label>
-            <input type="password" name="senha" placeholder="••••••••" required>
+            <div class="form-group">
+                <label for="senha">Senha SSH</label>
+                <input type="password" id="senha" name="senha" placeholder="Digite a senha" required
+                    autocomplete="current-password">
+            </div>
 
-            <label>Nome da Interface:</label>
-            <input type="text" name="interface" placeholder="Ex: GigabitEthernet0/1 ou ether1" required>
+            <div class="form-group">
+                <label for="interface">Interface</label>
+                <input type="text" id="interface" name="interface" placeholder="Ex: GigabitEthernet0/1" required>
+                <span class="hint">Cisco: GigabitEthernet0/1 | MikroTik: ether1 | Huawei: GigabitEthernet0/0/1</span>
+            </div>
 
-            <label>Descrição / Nome do Cliente:</label>
-            <input type="text" name="descricao" placeholder="Ex: Cliente_IFCE_Fortaleza" required>
+            <div class="form-group">
+                <label for="descricao">Descrição da interface</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Ex: Cliente_IFCE_Fortaleza"
+                    maxlength="100" required>
+            </div>
 
-            <button type="submit">Enviar Configuração a Distância</button>
+            <button type="submit">🚀 Enviar Configuração</button>
         </form>
 
         {% if resultado %}
-        <div class="alert">
-            <strong>Resultado:</strong>
+        <div class="resultado {% if sucesso %}sucesso{% else %}erro{% endif %}">
+            <h3>{% if sucesso %}✅ Configuração concluída{% else %}❌ Erro na configuração{% endif %}</h3>
             <pre>{{ resultado }}</pre>
         </div>
         {% endif %}
+
+        <div class="footer">
+            Sistema de automação de redes com Flask + Netmiko
+        </div>
     </div>
 </body>
 
