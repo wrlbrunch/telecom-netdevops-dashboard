@@ -29,7 +29,7 @@ def executar_configuracao(fabricante: str, ip: str, usuario: str, senha: str, in
         "host": ip,
         "username": usuario,
         "password": senha,
-        "port": 22,
+        "port": 2222,
         "conn_timeout": 10,
     }
 
