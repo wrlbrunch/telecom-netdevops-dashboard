@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Automação de Rede</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 10px;
+            background-color: #e2e2e2;
+            border-radius: 4px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Provisionar Interface de Rede</h2>
+        <form action="/configurar" method="POST">
+            <label>Tipo de Equipamento:</label>
+            <select name="fabricante">
+                <option value="cisco_ios">Cisco IOS</option>
+                <option value="mikrotik_routeros">Mikrotik RouterOS</option>
+                <option value="huawei_vrp">Huawei VRP</option>
+            </select>
+
+            <label>IP do Roteador:</label>
+            <input type="text" name="ip" placeholder="Ex: 192.168.1.1" required>
+
+            <label>Usuário SSH:</label>
+            <input type="text" name="usuario" placeholder="admin" required>
+
+            <label>Senha SSH:</label>
+            <input type="password" name="senha" placeholder="••••••••" required>
+
+            <label>Nome da Interface:</label>
+            <input type="text" name="interface" placeholder="Ex: GigabitEthernet0/1 ou ether1" required>
+
+            <label>Descrição / Nome do Cliente:</label>
+            <input type="text" name="descricao" placeholder="Ex: Cliente_IFCE_Fortaleza" required>
+
+            <button type="submit">Enviar Configuração a Distância</button>
+        </form>
+
+        {% if resultado %}
+        <div class="alert">
+            <strong>Resultado:</strong>
+            <pre>{{ resultado }}</pre>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
